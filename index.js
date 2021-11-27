@@ -5,7 +5,7 @@ const morgan   = require('morgan');
 const path = require('path');
 
 const port = process.env.PORT        || 4000;
-const db   = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/notas';
+const db   = process.env.MONGODB_URI || 'mongodb+srv://hello-react:tommy0102@cluster0.u8pav.mongodb.net/hello-react?retryWrites=true&w=majority';
 
 const app = express();
 
@@ -16,6 +16,10 @@ mongoose
   })
   .catch(err => console.error(`Connection error ${err}`));
 
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
   
   app.use(express.json());
   app.use(cors());
@@ -33,10 +37,7 @@ app.use((err, req, res, next) => {
     res.json({ error: err.message });
   });
   
-  app.use(express.static('public'));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+  
 
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`)
